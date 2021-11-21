@@ -1,3 +1,4 @@
+import socket
 import hashlib
 from hashlib import md5
 
@@ -14,3 +15,24 @@ def start_hashing(fromnum,to):
             print("Your Number is:{0}",i)
             break
 
+def Main():
+
+    hocmst='192.168.11.154' #client ip
+    port = 4000
+    
+    server = ('192.168.11.152', 4005)
+    
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    s.bind((hocmst,port))
+    
+    message = input("-> ")
+    while message !='q':
+        s.sendto(message.encode('utf-8'), server)
+        data, addr = s.recvfrom(1024)
+        data = data.decode('utf-8')
+        print("Received from server: " + data)
+        message = input("-> ")
+    s.close()
+
+if _name=='main_':
+    Main()
